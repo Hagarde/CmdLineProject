@@ -1,1 +1,1 @@
-/Users/aveyronvictor/Documents/DOIT/CmdLineRust/minigrep/target/debug/minigrep: /Users/aveyronvictor/Documents/DOIT/CmdLineRust/minigrep/src/main.rs
+/Users/aveyronvictor/Documents/DOIT/CmdLineRust/minigrep/target/debug/minigrep: /Users/aveyronvictor/Documents/DOIT/CmdLineRust/minigrep/src/lib.rs /Users/aveyronvictor/Documents/DOIT/CmdLineRust/minigrep/src/main.rs

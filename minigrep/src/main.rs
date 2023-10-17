@@ -1,42 +1,44 @@
 use std::env;
 use std::fs;
-use std::collections::HashMap;
-use std::path::Path;
+use std::process;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let query = &args[1];
-    let path_or_file = Path::new(&args[2]);
+    let config = Config::build(&args).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {err}");
+        process::exit(1);
+    });
+    //let result = grepFile(file_path, query);
+    println!("Nous avons trouvé {} occurence(s) de la chaîne '{}'", config.query, config.file_path);
+
 
 
     
 
 }
 
-
-fn is_dir_path(path_or_file: &String) -> bool {
-    let len = path_or_file.len();
-    if len < 3 {return true}
-    if path_or_file[path_or_file.len()-3..] == "txt".to_string() {return false}
-    true
+struct Config {
+    query: String,
+    file_path: String,
 }
 
-// En fonction du chemin du fichier en entrée, un Array est retourné avec les index des occurence de la query 
+impl Config {
+    fn build(args: &[String]) -> Result<Config, &'static str> {
+        if args.len() < 3 {
+            return Err("not enough arguments");
+        }
 
-fn grepFile (file_path: &String, query: &String ) -> [u16] {
+        let query = args[1].clone();
+        let file_path = args[2].clone();
 
-}
-
-// En fonction du chemin du folder en entrée, une HashMap est retourné avec comme clé le chemin du fichier texte et en objet associé les occurrence de la query 
-
-fn grepFolder(dir_path: &String, query: &String) -> [u16] {
-    let read = fs::read_dir(dir_path).unwrap();
-
-    let hashMapResult = HashMap::new();
-    for item in read {
-        if is_dir_path(item.path()){grepFolder(item.path(), query)}
-        hashMapResult.insert(item, grepFile((item.path()), query));
+        Ok(Config { query, file_path })
     }
-    return hashMapResult;
+}
+
+fn run(config: Config) {
+    let contents = fs::read_to_string(config.file_path)
+        .expect("Should have been able to read the file");
+
+    println!("With text:\n{contents}");
 }
